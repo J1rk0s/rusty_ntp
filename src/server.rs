@@ -15,10 +15,14 @@ impl NtpServer {
     pub fn start(&self) {
         let socket = UdpSocket::bind(format!("{}:{}", self.address, self.port)).unwrap();
 
+        println!("Listening on port {}", self.port);
+
         loop {
             let mut buff: [u8; 1024] = [0; 1024];
             
-            let (nbytes, addr) = socket.recv_from(&mut buff).unwrap();
+            let (_, addr) = socket.recv_from(&mut buff).unwrap();
+
+            println!("Got request from {}", addr);
 
             let packet = NtpPacket::from_bytes(&buff).unwrap();
             println!("{:?}", packet);
