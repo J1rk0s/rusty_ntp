@@ -1,6 +1,6 @@
 use std::net::UdpSocket;
 
-use crate::models::packet::NtpPacket;
+use crate::{models::packet::NtpPacket, resolver::NtpResolver};
 
 pub struct NtpServer {
     port: u32,
@@ -25,7 +25,19 @@ impl NtpServer {
             println!("Got request from {}", addr);
 
             let packet = NtpPacket::from_bytes(&buff).unwrap();
+
             println!("{:?}", packet);
+            let resolved = NtpResolver::resolve(&packet);
+            
+            match socket.send_to(&resolved.to_bytes(), addr) {
+                Ok(_) => {
+                    println!("Successfully sent the packet back");
+                }
+
+                Err(_) => {
+                    println!("Failed to send the packet back!");
+                }
+            }
         }
     }
 }

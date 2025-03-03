@@ -1,4 +1,4 @@
-use super::ntp_flags::NtpModeFlags;
+use super::ntp_flags::{NtpLeapFlags, NtpModeFlags};
 
 #[derive(Debug, Clone)]
 pub struct NtpPacket {
@@ -65,31 +65,13 @@ impl NtpPacket {
     }
 
     pub fn set_mode_flag(&mut self, flag: NtpModeFlags) -> &mut Self {
-        match flag {
-            NtpModeFlags::SymmetricActive => {
-                self.flags |= flag as u8;
-            }
+        self.flags = (self.flags & !0b00000111) | (flag as u8);
 
-            NtpModeFlags::SymmetricPasive => {
-                self.flags |= flag as u8;
-            }
+        self
+    }
 
-            NtpModeFlags::Client => {
-                self.flags |= flag as u8;
-            }
-
-            NtpModeFlags::Server => {
-                self.flags |= flag as u8;
-            }
-
-            NtpModeFlags::Control => {
-                self.flags |= flag as u8;
-            }
-
-            NtpModeFlags::Broadcast => {
-                self.flags |= flag as u8;
-            }
-        }
+    pub fn set_leap_flag(&mut self, flag: NtpLeapFlags) -> &mut Self {
+        self.flags = (self.flags & !0b11000000) | ((flag as u8) << 6);
 
         self
     }

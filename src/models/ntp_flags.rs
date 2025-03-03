@@ -7,3 +7,11 @@ pub enum NtpModeFlags {
     Broadcast = 5,
     Control = 6
 }
+
+#[repr(u8)]
+pub enum NtpLeapFlags {
+    NoWarning = 0,
+    LastMinuteSO = 1,
+    LastMinuteFN = 2,
+    Unknown = 3
+}
