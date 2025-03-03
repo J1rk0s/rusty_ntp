@@ -3,19 +3,19 @@ use std::net::UdpSocket;
 use crate::{models::packet::NtpPacket, resolver::NtpResolver};
 
 pub struct NtpServer {
-    port: u32,
+    port: u16,
     address: String
 }
 
 impl NtpServer {
-    pub fn init(address: String, port: u32) -> Self {
+    pub fn init(address: String, port: u16) -> Self {
         Self { port, address }
     }
 
     pub fn start(&self) {
-        let socket = UdpSocket::bind(format!("{}:{}", self.address, self.port)).unwrap();
+        let socket = UdpSocket::bind(format!("{}:{}", self.address, self.port)).expect("Cannot open socket at specified address and port");
 
-        println!("Listening on port {}", self.port);
+        println!("Listening on {}", format!("{}:{}", self.address, self.port));
 
         loop {
             let mut buff: [u8; 1024] = [0; 1024];

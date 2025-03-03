@@ -2,9 +2,7 @@ use crate::models::packet::NtpPacket;
 use crate::models::ntp_flags::{NtpModeFlags, NtpLeapFlags};
 use crate::utils;
 
-pub struct NtpResolver {
-
-}
+pub struct NtpResolver {}
 
 impl NtpResolver {
     pub fn resolve(packet: &NtpPacket) -> NtpPacket {
